@@ -1,40 +1,23 @@
-========================================================================
-    CONSOLE APPLICATION : PrototypeNew Project Overview
-========================================================================
+My Revision notes towards the Prototype are as follows: 
 
-AppWizard has created this PrototypeNew application for you.
-
-This file contains a summary of what you will find in each of the files that
-make up your PrototypeNew application.
+"-d \"C:\\Program Files\\Affectiva\\Affdex SDK\\data\"  --input \"C:\\Users\\daniel-hp\\Videos\\Interview7\\20171016073931.mp4\"  --numFaces \"2\" "
 
 
-PrototypeNew.vcxproj
-    This is the main project file for VC++ projects generated using an Application Wizard.
-    It contains information about the version of Visual C++ that generated the file, and
-    information about the platforms, configurations, and project features selected with the
-    Application Wizard.
+string input= "C:\\Users\\daniel-hp\\Videos\\Interview7\\20171016073931";
+    string videopath = "\"" +input+".mp4\"";
+    string csvpath = input+".csv";
+    string parameter = "-d \"C:\\Program Files\\Affectiva\\Affdex SDK\\data\"  --input "+videopath+"  --numFaces \"2\" ";
+    cout<<parameter<<endl;
+    cout<<videopath<<endl;
+    cout<<csvpath<<endl;
 
-PrototypeNew.vcxproj.filters
-    This is the filters file for VC++ projects generated using an Application Wizard. 
-    It contains information about the association between the files in your project 
-    and the filters. This association is used in the IDE to show grouping of files with
-    similar extensions under a specific node (for e.g. ".cpp" files are associated with the
-    "Source Files" filter).
+WekaModelImplementation.jar CSVFile, ArffFile, J48.Model, SVM.Model, NN.Model, NB.Model, results.csv
 
-PrototypeNew.cpp
-    This is the main application source file.
+The arguments to make the WekaModelImplementation.jar file to run are as follows:
 
-/////////////////////////////////////////////////////////////////////////////
-Other standard files:
+C:\Users\Lenovo\Desktop\Thesis\MRAD\NewCSV.csv C:\Users\Lenovo\Desktop\Thesis\MRAD\NewCSV.arff C:\Users\Lenovo\Desktop\Thesis\MRAD\J48.model C:\Users\Lenovo\Desktop\Thesis\MRAD\NN.model C:\Users\Lenovo\Desktop\Thesis\MRAD\SVM.model C:\Users\Lenovo\Desktop\Thesis\MRAD\NB.model C:\Users\Lenovo\Desktop\Thesis\MRAD\Output.csv 
 
-StdAfx.h, StdAfx.cpp
-    These files are used to build a precompiled header (PCH) file
-    named PrototypeNew.pch and a precompiled types file named StdAfx.obj.
+Database Schema for Result and Final Data
 
-/////////////////////////////////////////////////////////////////////////////
-Other notes:
-
-AppWizard uses "TODO:" comments to indicate parts of the source code you
-should add to or customize.
-
-/////////////////////////////////////////////////////////////////////////////
+Result: Runcode text, Sample Number int, Question Number int, J48 Decision text, NN Decision text, SVM Decision text, NB Decision text
+Final Data: Runcode text, Sample Number int, Question Number int,[Affectiva Emotions] real, [Empath Emotions] int
