@@ -1,0 +1,4 @@
+﻿  PrototypeNew.cpp
+c:\users\lenovo\desktop\prototypenew\prototypenew\prototypenew\prototypenew.cpp(770): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  PrototypeNew.vcxproj -> C:\Users\Lenovo\Desktop\PrototypeNew\PrototypeNew\Debug\PrototypeNew.exe
+  PrototypeNew.vcxproj -> C:\Users\Lenovo\Desktop\PrototypeNew\PrototypeNew\Debug\PrototypeNew.pdb (Full PDB)
