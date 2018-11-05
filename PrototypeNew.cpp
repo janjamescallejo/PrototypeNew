@@ -1,6 +1,3 @@
-// PrototypeNew.cpp : Defines the entry point for the console application.
-//
-
 #include "stdafx.h"
 #include <iostream>
 #include <fstream>
@@ -18,6 +15,7 @@
 #include <random>
 #include <cstdlib>
 #include <ctime>
+
 
 using namespace std;
 
@@ -39,6 +37,7 @@ double nsucsum = 0;
 double nfaisum = 0;
 
 double toCSV[5];
+
 string predictions[34][4];
 string nnResults;
 string nbResults;
@@ -46,6 +45,10 @@ string svmResults;
 string j48Results;
 string dataInput;
 string newInput;
+
+
+
+
 
 class line {
 public:
@@ -496,7 +499,6 @@ void combine()
 	}
 }
 
-
 void modelPredictions(string output)
 {
 	ifstream outcsv;
@@ -510,12 +512,31 @@ void modelPredictions(string output)
 			getline(outcsv, predictions[i][3], '\n');
 		}
 	}
-	catch(exception e)
+	catch (exception e)
 	{
 		outcsv.close();
 	}
 }
 
+void WekaJavaModel(string svmModel, string svmResult, string nbModel, string nbResult, string nnModel, string nnResult)
+{
+
+	string parameters = "-jar C:\\Users\\daniel-hp\\Downloads\\WekaJavaTest-master\\WekaJavaTest-master\\dist\\WekaJavaTest.jar " + svmModel + " " + svmResult + " " + nbModel + " " + nbResult + " " + nnModel + " " + nnResult;
+	LPCSTR par = parameters.c_str();
+	cout << "Reads Models from Weka" << endl;
+	ShellExecuteA(NULL, "open", "C:\\Program Files\\Java\\jdk-9.0.4\\bin\\java.exe", par, NULL, SW_SHOWMAXIMIZED);
+	system("PAUSE");
+
+
+}
+void j48ModelImplementation(string CSVnew, string ARFFnew, string J48model, string j48Result)
+{
+	string parameters = "-jar C:\\Users\\daniel-hp\\Downloads\\J48ModelApplication-master\\J48ModelApplication-master\\dist\\J48ModelApplication.jar " + CSVnew + " " + ARFFnew + " " + J48model + " " + j48Result;
+	LPCSTR par = parameters.c_str();
+	cout << "Reads J48 Model from Weka" << endl;
+	ShellExecuteA(NULL, "open", "C:\\Program Files\\Java\\jdk-9.0.4\\bin\\java.exe", par, NULL, SW_SHOWMAXIMIZED);
+	system("PAUSE");
+}
 void newCSV( string newer)
 {
 	cout << "Testing of New CSV creation" << endl;
@@ -527,7 +548,7 @@ void newCSV( string newer)
 			contents[i][j] = to_string(combinedvalues[i][j]);
 		}
 	}
-	
+
 	ofstream newcsv;
 	newcsv.open(newer);
 	newcsv << "joy" << "," << "fear" << "," << "disgust" << "," << "sadness" << "," << "anger" << "," << "surprise" << "," << "contempt" << "," << "Calm" << "," << "Angered" << "," << "Joyful" << "," << "Sorrow" << "," << "Performance";
@@ -541,49 +562,99 @@ void newCSV( string newer)
 	newcsv << "\n";
 	newcsv.close();
 	cout << "Success!" << endl;
+	/*
+
+	cout << "Testing of New CSV creation" << endl;
+	int i = 0;
+	string contents[34][11];
+	ifstream oldcsv;
+	oldcsv.open(older);
+	try
+	{
+		while (oldcsv.good())
+		{
+			if (i == 34)
+			{
+				break;
+			}
+			getline(oldcsv, contents[i][0], ',');
+			getline(oldcsv, contents[i][1], ',');
+			getline(oldcsv, contents[i][2], ',');
+			getline(oldcsv, contents[i][3], ',');
+			getline(oldcsv, contents[i][4], ',');
+			getline(oldcsv, contents[i][5], ',');
+			getline(oldcsv, contents[i][6], ',');
+			getline(oldcsv, contents[i][7], ',');
+			getline(oldcsv, contents[i][8], ',');
+			getline(oldcsv, contents[i][9], ',');
+			getline(oldcsv, contents[i][10], '\n');
+			i++;
+		}
+	}
+	catch (exception e)
+	{
+		oldcsv.close();
+	}
+	oldcsv.close();
+	/*for (int m = 0; m < 34; m++)
+	{
+	for (int n = 0; n < 11; n++)
+	{
+	cout <<contents[m][n]<<" ";
+	}
+	cout << endl;
+	}*/
+	/*
+	ofstream newcsv;
+	newcsv.open(newer);
+	newcsv << "joy" << "," << "fear" << "," << "disgust" << "," << "sadness" << "," << "anger" << "," << "surprise" << "," << "contempt" << "," << "Calm" << "," << "Angered" << "," << "Joyful" << "," << "Sorrow" << "," << "Performance";
+	newcsv << "\n";
+	for (int i = 0; i < 34; i++)
+	{
+		newcsv << contents[i][0] << "," << contents[i][1] << "," << contents[i][2] << "," << contents[i][3] << "," << contents[i][4] << "," << contents[i][5] << "," << contents[i][6] << "," << contents[i][7] << "," << contents[i][8] << "," << contents[i][9] << "," << contents[i][10] << "," << "Low";
+		newcsv << "\n";
+	}
+	newcsv << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << "High";
+	newcsv << "\n";
+	newcsv.close();
+	cout << "Success!" << endl;
+	*/
 }
+
 void WekaModelApplication(string inputcsv, string inputarff, string j48model, string nnmodel, string svmmodel, string nbmodel, string output)
 {
-	cout <<"Model Application"<< endl;
-	string parameter = "-jar C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\WekaModelImplementation\\dist\\WekaModelImplementation.jar " + inputcsv + " " + inputarff + " " + j48model + " " + nnmodel + " " + svmmodel + " " + nbmodel + " " + output;
+	cout << "Model Application" << endl;
+	string parameter = "-jar C:\\Users\\LENOVO\\Desktop\\Thesis\\WekaModelImplementation-master\\dist\\WekaModelImplementation.jar " + inputcsv + " " + inputarff + " " + j48model + " " + nnmodel + " " + svmmodel + " " + nbmodel + " " + output;
 	LPCSTR parameters = parameter.c_str();
-	ShellExecuteA(NULL, "open", "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath\\java.exe", parameters, NULL, SW_SHOWMAXIMIZED);
+	ShellExecuteA(NULL, "open", "C:\\Program Files (x86)\\Java\\jre1.8.0_181\\bin\\java.exe", parameters, NULL, SW_SHOWMAXIMIZED);
 	system("PAUSE");
 }
 
 void AffectivaProcess(string AffPath, string TimPath, string  AffCSVPath)
 {
-
-	string videopath = "\"" + AffPath + ".mp4\"";
-	string csvpath= AffPath + ".csv";
-	string parameter = "-d \"C:\\Program Files\\Affectiva\\Affdex SDK\\data\"  --input " + videopath + "  --numFaces \"2\" ";
 	std::cout << "Runs Affectiva" << endl;
+	LPCSTR AffectivaPath = AffPath.c_str();
 
-	//uncomment the comment below to run the old prototype 
-	//LPCSTR AffectivaPath = AffPath.c_str();
 	
-	//comment the code below to run the old prototype
-	LPCSTR AffectivaPath = parameter.c_str();
-	
-	/*
-	LPCSTR TimestampPath = TimPath.c_str();
-	insert Affectiva ShellExecute Here, and edit affpath for the csv. 
 
-	ShellExecuteA(NULL, "open", "C:\\Users\\daniel-hp\\Downloads\\cpp-sdk-samples-master\\cpp-sdk-samples-master\\affdex-win-samples.sln", "/p:Configuration=Release", NULL, SW_SHOWMAXIMIZED);
+	//LPCSTR TimestampPath = TimPath.c_str();
+	//insert Affectiva ShellExecute Here, and edit affpath for the csv. 
 
-	cout << "Opening solution";
+	//ShellExecuteA(NULL, "open", "C:\\Users\\daniel-hp\\Downloads\\cpp-sdk-samples-master\\cpp-sdk-samples-master\\affdex-win-samples.sln", "/p:Configuration=Release", NULL, SW_SHOWMAXIMIZED);
 
+	//cout << "Opening solution";
 
+	/* Temporary for Testing
+	ShellExecuteA(NULL, "open", "C:\\Users\\daniel-hp\\Downloads\\cpp-sdk-samples-master\\cpp-sdk-samples-master\\x64\\Release\\video-demo.exe",  AffectivaPath , NULL, SW_SHOWMAXIMIZED);
 	*/
+// system("PAUSE");
 
-	//Uncomment the comment below to run the old version.
-	//ShellExecuteA(NULL, "open", "C:\\Users\\daniel-hp\\Downloads\\cpp-sdk-samples-master\\cpp-sdk-samples-master\\x64\\Release\\video-demo.exe",  AffectivaPath , NULL, SW_SHOWMAXIMIZED);
+//	ShellExecuteA(NULL, "open", "C:\\Users\\daniel-hp\\Downloads\\cpp-sdk-samples-master\\cpp-sdk-samples-master\\x64\\Release\\video-demo.exe", NULL, NULL, SW_SHOWMAXIMIZED);
 
+	//std::cout << "Executing Video.exe";
 	
-	std::cout << "Executing Video.exe"<<endl;
-	cout << csvpath << endl;
-	std::system("PAUSE");
-	
+	//std::system("PAUSE");
+
 	
 
 	line l;
@@ -592,7 +663,7 @@ void AffectivaProcess(string AffPath, string TimPath, string  AffCSVPath)
 	int k = 0;
 	string inputs[53];
 	//CSV File created by Affectiva must be inserted here
-	ifstream input(csvpath);
+	ifstream input(AffCSVPath);
 	if (!input.is_open())
 		std::cout << "Error: File Open" << '\n';
 	try {
@@ -714,12 +785,15 @@ void AffectivaProcess(string AffPath, string TimPath, string  AffCSVPath)
 
 void EmpathProcess(string EmpPath, string TemPath)
 {
-	string parameter = "-jar C:\\Users\\Lenovo\\Desktop\\Thesis\\EMPATHCMS\\EmpathCMS2.jar 9_KjnGMlmjVaJLMphp4dJi4ZQoDKLoWWs-q9bsFPpB8 " + EmpPath +" " + TemPath;
+	string parameter = "-jar C:\\Users\\LENOVO\\Desktop\\Thesis\\EMPATHCMS\\EmpathCMS2.jar 9_KjnGMlmjVaJLMphp4dJi4ZQoDKLoWWs-q9bsFPpB8 " + EmpPath + " "+TemPath;
 	LPCSTR parameters = parameter.c_str();
 	string extract;
 
+	std::cout << "Opening Empath";
 
 	std::system("PAUSE");
+
+	//ShellExecuteA(NULL, "open", "C:\\Users\\daniel-hp\\Downloads\\eclipse-java-oxygen-2-win32-x86_64\\eclipse\\eclipse.exe", parameters, NULL, SW_SHOWMAXIMIZED);
 
 
 
@@ -727,7 +801,7 @@ void EmpathProcess(string EmpPath, string TemPath)
 
 
 	//C:\\Program Files\\Java\jdk-9.0.4\\bin\\java.exe
-	ShellExecuteA(NULL, "open", "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath\\java.exe", parameters, NULL, SW_SHOWMAXIMIZED);
+	ShellExecuteA(NULL, "open", "C:\\Program Files (x86)\\Java\\jre1.8.0_181\\bin\\java.exe", parameters, NULL, SW_SHOWMAXIMIZED);
 	std::system("PAUSE");
 	ifstream tempfile;
 	int n = 0;
@@ -760,11 +834,12 @@ void DatabaseInsert(string runcode)
 	{
 		int j = i + 1;
 		Combined c(samplenum, j, combinedvalues[i][0], combinedvalues[i][1], combinedvalues[i][2], combinedvalues[i][3], combinedvalues[i][4], combinedvalues[i][5], combinedvalues[i][6], combinedvalues[i][7], combinedvalues[i][8], combinedvalues[i][9], combinedvalues[i][10]);
-		d.insertData(runcode,c);
+		d.insertData(runcode, c);
 	}
 
 
 }
+
 string runcode(size_t length)
 {
 	srand(time(NULL));
@@ -774,7 +849,7 @@ string runcode(size_t length)
 			"0123456789"
 			"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 			"abcdefghijklmnopqrstuvwxyz";
-		const size_t max_index = (sizeof(charset) - 1);
+		const size_t max_index = (sizeof(charset)-1);
 		return charset[rand() % max_index];
 	};
 	string str(length, 0);
@@ -787,8 +862,10 @@ string runcode(size_t length)
 
 
 
+
 int _tmain(int argc, _TCHAR* argv[])
 {
+
 	string run = runcode(8);
 	cout << "This is your runcode: " << run << endl;
 	std::cout << "Please Enter Sample Number" << endl;
@@ -811,7 +888,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		afpathcsv = "C:\\Users\\daniel-hp\\Videos\\Interview6\\20171013093357.csv";
 		std::cout << "Please Enter Timestamp" << endl;
 		tipath = "C:\\Users\\daniel-hp\\Downloads\\Timestamps\\Timestamps\\Sample 48.txt";
-		AffectivaProcess(afpath, tipath, afpathcsv);
+		AffectivaProcess(afpath, tipath, afpathcsv);//Affectiva Code is placed here. You can add the Affectiva Video for ShellExecute in Here
 		std::cout << "Please Enter Audio Path" << endl;
 		Empath = "C:\\Users\\daniel-hp\\Documents\\Number48\\Number48\\48";
 		std::cout << "Please Enter Temp Path" << endl;
@@ -841,7 +918,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		afpathcsv = "C:\\Users\\daniel-hp\\Videos\\Interview6\\20171013093936.csv";
 		std::cout << "Please Enter Timestamp" << endl;
 		tipath = "C:\\Users\\daniel-hp\\Downloads\\Timestamps\\Timestamps\\Sample 49.txt";
-		AffectivaProcess(afpath, tipath, afpathcsv);
+		AffectivaProcess(afpath, tipath, afpathcsv);//Affectiva Code is placed here. You can add the Affectiva Video for ShellExecute in Here
 		std::cout << "Please Enter Audio Path" << endl;
 		Empath = "C:\\Users\\daniel-hp\\Documents\\Number49\\Number49\\49";
 		std::cout << "Please Enter Temp Path" << endl;
@@ -983,7 +1060,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		EmpathProcess(Empath, Tepath);
 		std::system("PAUSE");
 		DatabaseInsert(run);
-
+		
 
 		break;
 
@@ -1044,22 +1121,104 @@ int _tmain(int argc, _TCHAR* argv[])
 		break;
 
 	case 59 :
-		/*
-		This is a sample of the string transformation that I demonstrated this Wednesday(September 5, 2018).
-		*/
-		//uncomment the comment below to run the old prototype
-		//afpath = "-d \"C:\\Program Files\\Affectiva\\Affdex SDK\\data\"  --input \"C:\\Users\\daniel-hp\\Videos\\Interview7\\20171016080633.mp4\"  --numFaces \"2\" ";
-		afpath = "C:\\Users\\Lenovo\\Desktop\\Thesis\\Interview\\CSV Files\\20171016080633";
-		afpathcsv = "C:\\Users\\daniel-hp\\Videos\\Interview7\\20171016080633.csv";
-	    tipath = "C:\\Users\\Lenovo\\Desktop\\Thesis\\Timestamps\\Sample 59.txt";
-		AffectivaProcess(afpath, tipath,afpathcsv);
-	    Empath = "C:\\Users\\Lenovo\\Desktop\\Thesis\\Interview\\SegmentedCuts\\Number59\\59";
-	    Tepath = "C:\\Users\\Lenovo\\Desktop\\Thesis\\EMPATHCMS\\Temporary.txt";
+
+		std::cout << "Please Enter Video Path" << endl;
+		afpath = "-d \"C:\\Program Files\\Affectiva\\Affdex SDK\\data\"  --input \"C:\\Users\\daniel-hp\\Videos\\Interview7\\20171016080633.mp4\"  --numFaces \"2\" ";
+		afpathcsv = "C:\\Users\\LENOVO\\Desktop\\Thesis\\Interview\\CSV Files\\20171016080633.csv";
+		std::cout << "Please Enter Timestamp" << endl;
+	    tipath = "C:\\Users\\LENOVO\\Desktop\\Thesis\\Timestamps\\Sample 59.txt";
+		AffectivaProcess(afpath, tipath,afpathcsv);//Affectiva Code is placed here. You can add the Affectiva Video for ShellExecute in Here
+		std::cout << "Please Enter Audio Path" << endl;
+	    Empath = "C:\\Users\\LENOVO\\Desktop\\Thesis\\Interview\\SegmentedCuts\\Number59\\59";
+		std::cout << "Please Enter Temp Path" << endl;
+	    Tepath = "C:\\Users\\LENOVO\\Desktop\\Thesis\\EMPATHCMS\\Temporary.txt";
+
 		EmpathProcess(Empath, Tepath);
 		std::system("PAUSE");
 		DatabaseInsert(run);
 
 		break;
+
+	case 70:
+
+		std::cout << "Please Enter Video Path" << endl;
+		afpath = "-d \"C:\\Program Files\\Affectiva\\Affdex SDK\\data\"  --input \"C:\\Users\\daniel-hp\\Videos\\Interview8\\20180628120735.mp4\"  --numFaces \"2\" ";
+		afpathcsv = "C:\\Users\\daniel-hp\\Videos\\Interview8\\20180628120735.csv";
+		std::cout << "Please Enter Timestamp" << endl;
+		tipath = "C:\\Users\\daniel-hp\\Downloads\\Timestamps\\Timestamps\\Sample 70.txt";
+		AffectivaProcess(afpath, tipath, afpathcsv);//Affectiva Code is placed here. You can add the Affectiva Video for ShellExecute in Here
+		std::cout << "Please Enter Audio Path" << endl;
+		Empath = "C:\\Users\\daniel-hp\\Downloads\\RealEstateSegmentedCuts\\RealEstateSegmentedCuts\\Number11\\11";
+		std::cout << "Please Enter Temp Path" << endl;
+		Tepath = "C:\\Users\\daniel-hp\\Documents\\EMPATHPROTOCMS\\EmpathCMS3\\Temporary.txt";
+
+		EmpathProcess(Empath, Tepath);
+		std::system("PAUSE");
+		DatabaseInsert(run);
+
+		break;
+
+	case 72:
+
+		std::cout << "Please Enter Video Path" << endl;
+		afpath = "-d \"C:\\Program Files\\Affectiva\\Affdex SDK\\data\"  --input \"C:\\Users\\daniel-hp\\Videos\\Interview8\\20180628121728.mp4\"  --numFaces \"2\" ";
+		afpathcsv = "C:\\Users\\daniel-hp\\Videos\\Interview8\\20180628121728.csv";
+		std::cout << "Please Enter Timestamp" << endl;
+		tipath = "C:\\Users\\daniel-hp\\Downloads\\Timestamps\\Timestamps\\Sample 72.txt";
+		AffectivaProcess(afpath, tipath, afpathcsv);//Affectiva Code is placed here. You can add the Affectiva Video for ShellExecute in Here
+		std::cout << "Please Enter Audio Path" << endl;
+		Empath = "C:\\Users\\daniel-hp\\Downloads\\RealEstateSegmentedCuts\\RealEstateSegmentedCuts\\Number13\\13";
+		std::cout << "Please Enter Temp Path" << endl;
+		Tepath = "C:\\Users\\daniel-hp\\Documents\\EMPATHPROTOCMS\\EmpathCMS3\\Temporary.txt";
+
+		EmpathProcess(Empath, Tepath);
+		std::system("PAUSE");
+		DatabaseInsert(run);
+
+		break;
+
+
+	case 78:
+
+		std::cout << "Please Enter Video Path" << endl;
+		afpath = "-d \"C:\\Program Files\\Affectiva\\Affdex SDK\\data\"  --input \"C:\\Users\\daniel-hp\\Videos\\Interview8\\20180628134924.mp4\"  --numFaces \"2\" ";
+		afpathcsv = "C:\\Users\\daniel-hp\\Videos\\Interview8\\20180628134924.csv";
+		std::cout << "Please Enter Timestamp" << endl;
+		tipath = "C:\\Users\\daniel-hp\\Downloads\\Timestamps\\Timestamps\\Sample 78.txt";
+		AffectivaProcess(afpath, tipath, afpathcsv);//Affectiva Code is placed here. You can add the Affectiva Video for ShellExecute in Here
+		std::cout << "Please Enter Audio Path" << endl;
+		Empath = "C:\\Users\\daniel-hp\\Downloads\\RealEstateSegmentedCuts\\RealEstateSegmentedCuts\\Number19\\19";
+		std::cout << "Please Enter Temp Path" << endl;
+		Tepath = "C:\\Users\\daniel-hp\\Documents\\EMPATHPROTOCMS\\EmpathCMS3\\Temporary.txt";
+
+		EmpathProcess(Empath, Tepath);
+		std::system("PAUSE");
+		DatabaseInsert(run);
+
+		break;
+
+	case 79:
+
+		std::cout << "Please Enter Video Path" << endl;
+		afpath = "-d \"C:\\Program Files\\Affectiva\\Affdex SDK\\data\"  --input \"C:\\Users\\daniel-hp\\Videos\\Interview8\\20180628135449.mp4\"  --numFaces \"2\" ";
+		afpathcsv = "C:\\Users\\daniel-hp\\Videos\\Interview8\\20180628135449.csv";
+		std::cout << "Please Enter Timestamp" << endl;
+		tipath = "C:\\Users\\daniel-hp\\Downloads\\Timestamps\\Timestamps\\Sample 79.txt";
+		AffectivaProcess(afpath, tipath, afpathcsv);//Affectiva Code is placed here. You can add the Affectiva Video for ShellExecute in Here
+		std::cout << "Please Enter Audio Path" << endl;
+		Empath = "C:\\Users\\daniel-hp\\Downloads\\RealEstateSegmentedCuts\\RealEstateSegmentedCuts\\Number20\\20";
+		std::cout << "Please Enter Temp Path" << endl;
+		Tepath = "C:\\Users\\daniel-hp\\Documents\\EMPATHPROTOCMS\\EmpathCMS3\\Temporary.txt";
+
+		EmpathProcess(Empath, Tepath);
+		std::system("PAUSE");
+		DatabaseInsert(run);
+
+		break;
+
+
+
+
 	default :
 
 		return 0;
@@ -1067,22 +1226,862 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	}
 
-	string newcsv = "C:\\Users\\Lenovo\\Desktop\\Thesis\\MRAD\\NewCSV.csv";
-	string inputarff = "C:\\Users\\Lenovo\\Desktop\\Thesis\\MRAD\\NewCSV.arff";
+	double nnfailcount = 0;
+	double nnsuccesscount = 0;
+
+
+string origdec = "";
+
+string deccom = "";
+
+cout << "Use Combined(C) or Stand Alone(A)?" << endl;
+cin >> deccom  ;
+
+bool deccomlog = false;
+
+if (deccom == "C")
+
+deccomlog = true;
+
+else if (deccom == "A")
+
+deccomlog = false;
+
+
+string finalpath = "";
+
+string newcsv = "";
+string inputarff = "";
+string j48Model = "";
+string nnModel = "";
+string svmModel = "";
+string nbModel = "";
+string output = "";
+
+
+switch (samplenum){
+
+
+case 48:
+
+
+	if (deccomlog == false)
+	{
+
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.arff";
 	newCSV(newcsv);
-	string j48Model= "C:\\Users\\Lenovo\\Desktop\\Thesis\\MRAD\\J48Model.model";
-	string nnModel = "C:\\Users\\Lenovo\\Desktop\\Thesis\\MRAD\\NNModel.model";
-	string svmModel = "C:\\Users\\Lenovo\\Desktop\\Thesis\\MRAD\\SVMModel.model";
-	string nbModel = "C:\\Users\\Lenovo\\Desktop\\Thesis\\MRAD\\NBModel.model";
-	string output = "C:\\Users\\Lenovo\\Desktop\\Thesis\\MRAD\\output.csv";
-	WekaModelApplication(newcsv,inputarff,j48Model,nnModel,svmModel,nbModel,output);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
 
 	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 48.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 48.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+
+	break;
+
+case 49:
+
+
+	if (deccomlog == false)
+	{
+
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 49.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 49.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+
+
+	break;
+
+
+case 50:
+
+	if (deccomlog == false)
+	{
+
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 50.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 50.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+
+	break;
+
+
+case 51:
+
+	if (deccomlog == false)
+	{
+
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 51.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 51.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+
+
+	break;
+
+
+
+case 52:
+
+	if (deccomlog == false)
+	{
+
+
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 52.csv";
+
+	origdec = "Sucess";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 52.csv";
+
+
+		origdec = "Success";
+	}
+
+
+
+	break;
+
+
+
+
+case 53:
+
+
+	if (deccomlog == false)
+	{
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 53.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 53.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+	break;
+
+
+case 54:
+
+
+	if (deccomlog == false)
+	{
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 54.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 54.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+	break;
+
+
+case 55:
+
+	if (deccomlog == false)
+	{
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 55.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 55.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+
+
+	break;
+
+
+
+case 56:
+
+	if (deccomlog == false)
+	{
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 56.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 56.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+
+
+
+	break;
+
+
+
+case 57:
+
+
+	if (deccomlog == false)
+	{
+
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 57.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 57.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+
+
+	break;
+
+
+case 58:
+
+
+	if (deccomlog == false)
+	{
+
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 58.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 58.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+
+	break;
+
+case 59:
+
+	if (deccomlog == false)
+	{
+
+
+	 newcsv = "C:\\Users\\LENOVO\\Desktop\\Thesis\\MRAD\\NewCSV.csv";
+	 inputarff = "C:\\Users\\LENOVO\\Desktop\\Thesis\\MRAD\\NewCSV.arff";
+	newCSV(newcsv);
+	 j48Model = "C:\\Users\\LENOVO\\Desktop\\Thesis\\MRAD\\J48Model.model";
+	 nnModel = "C:\\Users\\LENOVO\\Desktop\\Thesis\\MRAD\\NNModel.model";
+	 svmModel = "C:\\Users\\LENOVO\\Desktop\\Thesis\\MRAD\\SVMModel.model";
+	 nbModel = "C:\\Users\\LENOVO\\Desktop\\Thesis\\MRAD\\NBModel.model";
+	 output = "C:\\Users\\LENOVO\\Desktop\\Thesis\\MRAD\\Output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\MRAD\\MRAD\\MedRepFinalOutput 59.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 59.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+
+	break;
+
+case 70:
+
+	if (deccomlog == false)
+	{
+
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\RealEstateFinalOutput 70.csv";
+
+	origdec = "Success";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 70.csv";
+
+
+		origdec = "Success";
+	}
+
+
+	break;
+
+
+
+case 72:
+
+	if (deccomlog == false)
+	{
+
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\RealEstateFinalOutput 72.csv";
+
+	origdec = "Success";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 72.csv";
+
+
+		origdec = "Success";
+	}
+
+	break;
+
+
+case 78:
+
+
+	if (deccomlog == false)
+	{
+
+
+	newcsv = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NewCSV.csv";
+	inputarff = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NewCSV.arff";
+	newCSV(newcsv);
+	j48Model = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\J48Model.model";
+	nnModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NNModel.model";
+	svmModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\SVMModel.model";
+	nbModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NBModel.model";
+	output = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\output.csv";
+	WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+	modelPredictions(output);
+
+	finalpath = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\RealEstateFinalOutput 78.csv";
+
+	origdec = "Fail";
+
+	}
+
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 78.csv";
+
+
+		origdec = "Fail";
+	}
+
+
+
+	break;
+
+case 79:
+
+	if (deccomlog == false)
+	{
+
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output);
+
+		 finalpath = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\RealEstateFinalOutput 79.csv";
+
+		 origdec = "Fail";
+
+	}
+	 
+	else if (deccomlog == true)
+	{
+
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newCSV(newcsv);
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
+
+		modelPredictions(output); 
+
+		finalpath = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\CombinedFinalOutput 79.csv";
+
+
+		origdec = "Fail";
+	}
+
+	
+
+	break;
+
+		default:
+
+	return 0;
+
+
+}
 
 	int NNSuccess = 0;
 	int NNFail = 0;
 	int NBSuccess = 0;
-	int NBFail = 0; 
+	int NBFail = 0;
 	string NBfinaldecision;
 	int J48Success = 0;
 	int J48fail = 0;
@@ -1095,8 +2094,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	string dec2;
 	string dec3;
 	string dec4;
-	for (int i = 0; i < 34; i++,g++)
+
+
+	for (int i = 0; i < 34 ; i++, g++)
 	{
+
 		dec1 = predictions[i][0];
 		dec2 = predictions[i][1];
 		dec3 = predictions[i][2];
@@ -1120,28 +2122,32 @@ int _tmain(int argc, _TCHAR* argv[])
 			NBSuccess++;
 		else
 			NBFail++;
+
 		
 	}
+
+
 	if (NBSuccess > NBFail)
-		NBfinaldecision = "High";
+		NBfinaldecision = "SUCCESS";
 	else
-		NBfinaldecision = "Low";
+		NBfinaldecision = "FAIL";
 	if (SVMSuccess > SVMfail)
-		SVMfinaldecision = "High";
+		SVMfinaldecision = "SUCCESS";
 	else
-		SVMfinaldecision = "Low";
+		SVMfinaldecision = "FAIL";
 	if (J48Success > J48fail)
-		J48finaldecision = "High";
+		J48finaldecision = "SUCCESS";
 	else
-		J48finaldecision = "Low";
-	
+		J48finaldecision = "FAIL";
+	double nsucmean = nsucsum / 34;
+	double nfaimean = nfaisum / 34;
 	string NNfinaldecision;
-	if (NNSuccess > NNFail)
-		NNfinaldecision = "High";
+	if (nsucmean > nfaimean)
+		NNfinaldecision = "SUCCESS";
 
 
 	else
-		NNfinaldecision = "Low";
+		NNfinaldecision = "FAIL";
 	std::cout << "Final Decision: NB: " << NBfinaldecision << " SVM: " << SVMfinaldecision << " J48: " << J48finaldecision << " NN: " << NNfinaldecision;
 	
 	double NBpercentSuc = (NBSuccess*100) / 34;
@@ -1150,8 +2156,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	double SVMpercentFai = (SVMfail*100) / 34;
 	double J48percentSuc = (J48Success*100) / 34;
 	double J48percentFai = (J48fail*100) / 34;	
-	double NNpercentSuc = (NNSuccess*100)/34;
-	double NNpercentFai = (NNFail*100)/34;
+	double NNpercentSuc = (NNSuccess * 100) / 34;
+	double NNpercentFai = (NNFail * 100) / 34;
 
 
 
@@ -1245,50 +2251,259 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	}
 
+	/*
+	
+
+	string finsamnum = "0";
+
+	switch (samplenum) {
+
+	case 48:
+
+		finsamnum = "48";
+
+		break;
 
 
+
+
+	case 49:
+
+		finsamnum = "49";
+
+		break;
+
+
+
+	case 50:
+
+		finsamnum = "50";
+
+		break;
+
+
+
+
+	case 51:
+
+		finsamnum = "51";
+
+		break;
+
+
+
+
+
+	case 52:
+
+		finsamnum = "52";
+
+		break;
+
+
+
+
+
+	case 53:
+
+		finsamnum = "53";
+
+		break;
+
+
+
+
+	case 54:
+
+		finsamnum = "54";
+
+		break;
+
+
+
+
+	case 55:
+
+		finsamnum = "55";
+
+		break;
+
+
+
+
+	case 56:
+
+		finsamnum = "56";
+
+		break;
+
+
+
+
+	case 57:
+
+		finsamnum = "57";
+
+		break;
+
+
+
+	case 58:
+
+		finsamnum = "58";
+
+		break;
+
+	case 59:
+
+		finsamnum = "59";
+
+		break;
+
+	case 70:
+
+		finsamnum = "70";
+
+		break;
+
+
+	case 72:
+
+		finsamnum = "72";
+
+		break;
+
+
+	case 78:
+
+		finsamnum = "78";
+
+		break;
+
+
+	case 79:
+
+		finsamnum = "79";
+
+		break;
+
+
+	default:
+
+		return 0;
+
+	}
+
+
+
+
+	string finalpath = "C:\\Users\\daniel-hp\\Downloads\\REED\\REED\\MedRepFinalOutput " + finsamnum + ".csv";
+
+
+	*/
+	ofstream finaldata;
+	 
+	finaldata.open(finalpath);
+
+	
+	std::cout << "\nClassification of Sample is " << origdec << endl;
 	std::cout <<"\n" << "NB: Success" << " : "<<NBSuccess << " : " << NBpercentSuc << "%"  << endl;
 	std::cout << "SVM: Success" << " : " <<SVMSuccess << " : " << SVMpercentSuc << "%" << endl;
 	std::cout << "J48: Success" << " : " << J48Success << " : " <<J48percentSuc << "%"  << endl;
-	std::cout << "NN: Success" << " : " << NNSuccess << " : " << NNpercentSuc << "%"  << endl;
+	std::cout << "NN: Success" << " : " << NNSuccess << " : " << NNpercentSuc << "%" << endl;
 
 	std::cout << "NB: Fail" << " : " << NBFail << " : " << NBpercentFai << "%" << endl;
 	std::cout << "SVM: Fail" << " : " << SVMfail << " : " << SVMpercentFai  << "%" << endl;
 	std::cout << "J48: Fail" << " : " << J48fail << " : " << J48percentFai << "%"  << endl;
-	std::cout << "NN: Fail" << " : " << NNFail << " : " << NNpercentFai   << "%" << endl;
+	std::cout << "NN: Fail" << " : " << NNFail << " : " << NNpercentFai << "%" << endl;
+
+	finaldata << "Classification of Sample is " << origdec << endl;
+
+	finaldata << "\n" << "NB: Success" << " : " << NBSuccess << " : " << NBpercentSuc << "%" << endl;
+	finaldata << "SVM: Success" << " : " << SVMSuccess << " : " << SVMpercentSuc << "%" << endl;
+	finaldata << "J48: Success" << " : " << J48Success << " : " << J48percentSuc << "%" << endl;
+	finaldata << "NN: Success" << " : " << NNSuccess << " : " << NNpercentSuc << "%" << endl;
+
+	finaldata << "NB: Fail" << " : " << NBFail << " : " << NBpercentFai << "%" << endl;
+	finaldata << "SVM: Fail" << " : " << SVMfail << " : " << SVMpercentFai << "%" << endl;
+	finaldata << "J48: Fail" << " : " << J48fail << " : " << J48percentFai << "%" << endl;
+	finaldata << "NN: Fail" << " : " << NNFail << " : " << NNpercentFai << "%" << endl;
+
+
 
 	if (NBsucclasb == true)
 
-		std::cout << "Best Classifier success is " << NBsucclas << " with " << NBpercentSuc << "%" <<endl;
+	{
+		std::cout << "Best Classifier success is " << NBsucclas << " with " << NBpercentSuc << "%" << endl;
+		finaldata << "Best Classifier success is " << NBsucclas << " with " << NBpercentSuc << "%" << endl;
+
+	}
 
 	if (SVMsucclasb == true)
+	{
+
 		std::cout << "Best Classifier success is " << SVMsucclas << " with " << SVMpercentSuc << "%" << endl;
-
+		finaldata << "Best Classifier success is " << SVMsucclas << " with " << SVMpercentSuc << "%" << endl;
+	}
 	if (J48succlasb == true)
+
+	{
+
+
 		std::cout << "Best Classifier success is " << J48succlas << " with " << J48percentSuc << "%" << endl;
-
+		finaldata << "Best Classifier success is " << J48succlas << " with " << J48percentSuc << "%" << endl;
+	}
 	if (NNsucclasb == true)
+
+	{
+
 		std::cout << "Best Classifier success is " << NNsucclas << " with " << NNpercentSuc << "%" << endl;
+		finaldata << "Best Classifier success is " << NNsucclas << " with " << NNpercentSuc << "%" << endl;
 
 
+	}
+
+	
 	if (NBfalclasb == true)
 
-		std::cout << "Best Classfier fail is " << NBfalclas << " with " << NBpercentFai  << "%" <<endl;
+	{
 
+		std::cout << "Best Classfier fail is " << NBfalclas << " with " << NBpercentFai << "%" << endl;
+		finaldata << "Best Classfier fail is " << NBfalclas << " with " << NBpercentFai << "%" << endl;
+
+
+	}
 	if (SVMfalclasb == true)
 
+	{
+
 		std::cout << "Best Classfier fail is " << SVMfalclas << " with " << SVMpercentFai << "%" << endl;
+		finaldata << "Best Classfier fail is " << SVMfalclas << " with " << SVMpercentFai << "%" << endl;
+
+	}
 
 	if (J48falclasb == true)
+	{
 
 		std::cout << "Best Classfier fail is " << J48falclas << " with " << J48percentFai << "%" << endl;
+		finaldata << "Best Classfier fail is " << J48falclas << " with " << J48percentFai << "%" << endl;
 
+
+	}
 	if (NNfalclasb == true)
 
+	{
+
+
+
 		std::cout << "Best Classfier fail is " << NNfalclas << " with " << NNpercentFai << "%" << endl;
+		finaldata << "Best Classfier fail is " << NNfalclas << " with " << NNpercentFai << "%" << endl;
 
 
-	d.databaseclose();
+
+	}
+	finaldata.close();
+
 	std::system("PAUSE");
 	
 
