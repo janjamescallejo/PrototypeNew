@@ -1852,14 +1852,14 @@ case 59:
 	else if (deccomlog == true)
 	{
 
-		newcsv = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.csv";
-		inputarff = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NewCSV.arff";
+		newcsv = "C:\\Users\\daniel-hp\\Downloads\\CombinedData\\CombinedDatasets\\NewCSV.csv";
+		inputarff = "C:\\Users\\daniel-hp\\Downloads\\CombinedData\\CombinedDatasets\\NewCSV.arff";
 		newCSV(newcsv);
-		j48Model = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\J48Model.model";
-		nnModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NNModel.model";
-		svmModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\SVMModel.model";
-		nbModel = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\NBModel.model";
-		output = "C:\\Users\\daniel-hp\\Downloads\\Combined Data\\Combined Datasets\\output.csv";
+		j48Model = "C:\\Users\\daniel-hp\\Downloads\\CombinedData\\CombinedDatasets\\J48Model.model";
+		nnModel = "C:\\Users\\daniel-hp\\Downloads\\CombinedData\\CombinedDatasets\\NNModel.model";
+		svmModel = "C:\\Users\\daniel-hp\\Downloads\\CombinedData\\CombinedDatasets\\SVMModel.model";
+		nbModel = "C:\\Users\\daniel-hp\\Downloads\\CombinedData\\CombinedDatasets\\NBModel.model";
+		output = "C:\\Users\\daniel-hp\\Downloads\\CombinedData\\CombinedDatasets\\output.csv";
 		WekaModelApplication(newcsv, inputarff, j48Model, nnModel, svmModel, nbModel, output);
 
 		modelPredictions(output);
